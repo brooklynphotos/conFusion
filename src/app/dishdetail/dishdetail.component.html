@@ -32,6 +32,13 @@
             </md-card-title>
           </md-card-header>
           <md-card-content>
+            <md-list>
+              <md-list-item *ngFor="let comment of dish.comments">
+                {{comment.comment}}
+                {{comment.rating}} stars
+                --{{comment.author}} {{comment.date | date}}
+              </md-list-item>
+            </md-list>
             <p>{{dish.description}}
             </p>
           </md-card-content>
