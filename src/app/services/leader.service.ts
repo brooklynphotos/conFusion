@@ -8,11 +8,11 @@ export class LeaderService {
 
   constructor() { }
 
-  getLeaders() {
-    return LEADERS;
+  getLeaders(): Promise<Leader[]> {
+    return Promise.resolve(LEADERS);
   }
 
-  getFeaturedLeader(): Leader {
-    return LEADERS.filter(l => l.featured)[0];
+  getFeaturedLeader(): Promise<Leader> {
+    return Promise.resolve(LEADERS.filter(l => l.featured)[0]);
   }
 }
