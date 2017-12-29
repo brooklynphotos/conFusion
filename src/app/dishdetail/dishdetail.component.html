@@ -43,6 +43,11 @@
             --{{comment.author}} {{comment.date | date}}
           </md-list-item>
         </md-list>
+        <div *ngIf="preview">
+            {{preview.comment}}
+            {{preview.rating}} stars
+            --{{preview.author}} {{preview.date | date}}
+        </div>
         <form novalidate [formGroup]="commentForm" (ngSubmit)="onSubmit()">
           <p>
             <md-input-container class="half-width"

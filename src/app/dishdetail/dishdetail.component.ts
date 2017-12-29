@@ -6,6 +6,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { Dish } from '../shared/dish';
 import { DishService } from '../services/dish.service';
+import {Comment} from '../shared/comment';
 
 import 'rxjs/add/operator/switchMap';
 
@@ -20,6 +21,7 @@ export class DishdetailComponent implements OnInit {
   dishIds: number[];
   prev: number;
   next: number;
+  preview: Comment;
   readonly minLength = 2;
   readonly maxLength = 80;
 
@@ -62,18 +64,24 @@ export class DishdetailComponent implements OnInit {
   }
 
   onValueChanged(data?: any) {
-    if (!this.commentForm) { return; }
     const f = this.commentForm;
+    if (!f) { return; }
+    if (f.pristine) { return; }
     Object.keys(this.formErrors).forEach(field => {
       this.formErrors[field] = '';
       const control = f.get(field);
-      if (control && control.dirty && !control.valid) {
-        // possible error messages for this form field
-        const msgs = this.validationMessages[field];
-        // append all the errors for this form field
-        Object.keys(control.errors).forEach(errKey => {
-          this.formErrors[field] += msgs[errKey] + ' ';
-        });
+      if (control && control.dirty) {
+        if (control.valid) {
+          this.preview = {...f.value, date: new Date()};
+        } else {
+          this.preview = null;
+          // possible error messages for this form field
+          const msgs = this.validationMessages[field];
+          // append all the errors for this form field
+          Object.keys(control.errors).forEach(errKey => {
+            this.formErrors[field] += msgs[errKey] + ' ';
+          });
+        }
       }
     });
   }
@@ -96,6 +104,17 @@ export class DishdetailComponent implements OnInit {
 
   goBack(): void {
     this.location.back();
+  }
+
+  onSubmit() {
+    this.dish.comments.push({...this.preview});
+    this.preview = null;
+    this.commentForm.markAsPristine();
+    this.commentForm.reset({
+      author: '',
+      comment: '',
+      rating: 5
+    });
   }
 
 }
