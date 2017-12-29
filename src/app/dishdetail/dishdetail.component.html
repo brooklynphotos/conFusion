@@ -29,23 +29,44 @@
     </md-card>
   </div>
   <div fxFlex="40">
-      <md-card *ngIf="dish">
-          <md-card-header>
-            <md-card-title>
-              <h3>Comments</h3>
-            </md-card-title>
-          </md-card-header>
-          <md-card-content>
-            <md-list>
-              <md-list-item *ngFor="let comment of dish.comments">
-                {{comment.comment}}
-                {{comment.rating}} stars
-                --{{comment.author}} {{comment.date | date}}
-              </md-list-item>
-            </md-list>
-            <p>{{dish.description}}
-            </p>
-          </md-card-content>
-        </md-card>
-      </div>
+    <md-card *ngIf="dish">
+      <md-card-header>
+        <md-card-title>
+          <h3>Comments</h3>
+        </md-card-title>
+      </md-card-header>
+      <md-card-content>
+        <md-list>
+          <md-list-item *ngFor="let comment of dish.comments">
+            {{comment.comment}}
+            {{comment.rating}} stars
+            --{{comment.author}} {{comment.date | date}}
+          </md-list-item>
+        </md-list>
+        <form novalidate [formGroup]="commentForm" (ngSubmit)="onSubmit()">
+          <p>
+            <md-input-container class="half-width"
+              dividerColor="{{(formErrors.author) ? 'warn' : 'primary'}}">
+              <input mdInput formControlName="author" placeholder="Your name" type="text" required>
+              <md-hint>
+                <span [hidden]="!(formErrors.author)">{{formErrors.author}}</span>
+              </md-hint>
+            </md-input-container>
+          </p>
+          <p>
+            <md-slider min="1" max="5" step="1" value="5" thumbLabel tickInterval="1"></md-slider>
+          </p>
+          <p>
+            <md-input-container class="full-width">
+              <textarea mdInput formControlName="comment" placeholder="Your Comment" rows=12></textarea>
+              <md-hint>
+                <span [hidden]="!(formErrors.comment)">{{formErrors.comment}}</span>
+              </md-hint>
+            </md-input-container>
+          </p>
+        <button type="submit" md-button class="background-primary text-floral-white" [disabled]="commentForm.invalid">Submit</button>
+          </form>
+        </md-card-content>
+    </md-card>
+  </div>
 </div>

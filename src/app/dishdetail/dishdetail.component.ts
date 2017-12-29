@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { Params, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { Dish } from '../shared/dish';
 import { DishService } from '../services/dish.service';
@@ -14,16 +15,68 @@ import 'rxjs/add/operator/switchMap';
   styleUrls: ['./dishdetail.component.scss']
 })
 export class DishdetailComponent implements OnInit {
-
+  commentForm: FormGroup;
   dish: Dish;
   dishIds: number[];
   prev: number;
   next: number;
+  readonly minLength = 2;
+  readonly maxLength = 80;
+
+  readonly formErrors  = {
+    author: '',
+    comment: ''
+  };
+
+  readonly validationMessages = {
+    author: {
+      'required': 'Your name is required.',
+      'minlength':  `Your name must be at least ${this.minLength} characters long.`,
+      'maxlength':  `Your name cannot be more than ${this.maxLength} characters long.`
+    },
+    comment: {
+      required: 'Comment is required.'
+    }
+  };
 
   constructor(
     private dishService: DishService,
     private route: ActivatedRoute,
-    private location: Location) { }
+    private location: Location,
+    private fb: FormBuilder
+  ) {
+    this.createForm();
+  }
+
+  createForm() {
+    this.commentForm = this.fb.group({
+      author: ['', [Validators.required, Validators.minLength(this.minLength), Validators.maxLength(this.maxLength)]],
+      rating: 5,
+      comment: ['', Validators.required]
+    });
+
+    this.commentForm.valueChanges
+      .subscribe(this.onValueChanged.bind(this));
+
+    this.onValueChanged();
+  }
+
+  onValueChanged(data?: any) {
+    if (!this.commentForm) { return; }
+    const f = this.commentForm;
+    Object.keys(this.formErrors).forEach(field => {
+      this.formErrors[field] = '';
+      const control = f.get(field);
+      if (control && control.dirty && !control.valid) {
+        // possible error messages for this form field
+        const msgs = this.validationMessages[field];
+        // append all the errors for this form field
+        Object.keys(control.errors).forEach(errKey => {
+          this.formErrors[field] += msgs[errKey] + ' ';
+        });
+      }
+    });
+  }
 
   ngOnInit() {
     this.dishService.getDishIds().subscribe(dishIds => this.dishIds = dishIds);
