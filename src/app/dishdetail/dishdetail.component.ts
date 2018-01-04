@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 
 import { Params, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
@@ -18,6 +18,7 @@ import 'rxjs/add/operator/switchMap';
 export class DishdetailComponent implements OnInit {
   commentForm: FormGroup;
   dish: Dish;
+  errMsg: string;
   dishIds: number[];
   prev: number;
   next: number;
@@ -45,7 +46,8 @@ export class DishdetailComponent implements OnInit {
     private dishService: DishService,
     private route: ActivatedRoute,
     private location: Location,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    @Inject('ImageURL') private ImageURL
   ) {
     this.createForm();
   }
@@ -93,7 +95,9 @@ export class DishdetailComponent implements OnInit {
       .subscribe(d => {
         this.dish = d;
         this.setPrevNext(d.id);
-      });
+      },
+      errMsg => this.errMsg = errMsg
+    );
   }
 
   setPrevNext(dishId: number) {
