@@ -18,6 +18,7 @@ import 'rxjs/add/operator/switchMap';
 export class DishdetailComponent implements OnInit {
   commentForm: FormGroup;
   dish: Dish;
+  dishcopy = null;
   errMsg: string;
   dishIds: number[];
   prev: number;
@@ -94,6 +95,7 @@ export class DishdetailComponent implements OnInit {
       .switchMap((params: Params) => this.dishService.getDish(+params['id']))
       .subscribe(d => {
         this.dish = d;
+        this.dishcopy = d;
         this.setPrevNext(d.id);
       },
       errMsg => this.errMsg = errMsg
@@ -111,7 +113,10 @@ export class DishdetailComponent implements OnInit {
   }
 
   onSubmit() {
-    this.dish.comments.push({...this.preview});
+    this.dishcopy.comments.push({...this.preview});
+    this.dishcopy.save()
+      // confirms save occurred successfully, so put that in the real dish
+      .subscribe(dish => this.dish = dish);
     this.preview = null;
     this.commentForm.markAsPristine();
     this.commentForm.reset({

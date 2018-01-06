@@ -33,7 +33,7 @@ export class DishService {
   }
 
   getFeaturedDish(): Observable<Dish> {
-    return this.restangular.all('dish').getList({featured: true})
+    return this.restangular.all('dishes').getList({featured: true})
     .map(dishes => dishes[0])
     // .map(res => this.processHTTPMsgService.extractData(res)[0])
     // .catch(error => this.processHTTPMsgService.handleError(error))
