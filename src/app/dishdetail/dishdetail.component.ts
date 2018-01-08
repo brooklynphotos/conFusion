@@ -9,14 +9,20 @@ import { DishService } from '../services/dish.service';
 import {Comment} from '../shared/comment';
 
 import 'rxjs/add/operator/switchMap';
-import { visibility } from '../animations/app.animation';
+import { visibility , flyInOut, expand } from '../animations/app.animation';
 
 @Component({
   selector: 'app-dishdetail',
   templateUrl: './dishdetail.component.html',
   styleUrls: ['./dishdetail.component.scss'],
+  host: {
+    '[@flyInOut]': 'true',
+    'style': 'display: block;'
+  },
   animations: [
-    visibility()
+    visibility(),
+    flyInOut(),
+    expand()
   ]
 })
 export class DishdetailComponent implements OnInit {
