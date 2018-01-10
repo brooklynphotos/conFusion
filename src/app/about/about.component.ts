@@ -18,7 +18,7 @@ import { expand, flyInOut } from '../animations/app.animation';
   ]
 })
 export class AboutComponent implements OnInit {
-  private leaders: Leader[];
+  leaders: Leader[];
 
   constructor(private leaderService: LeaderService) { }
 

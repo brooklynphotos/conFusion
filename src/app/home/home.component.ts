@@ -22,10 +22,10 @@ import { expand, flyInOut } from '../animations/app.animation';
   ]
 })
 export class HomeComponent implements OnInit {
-  private dish: Dish;
-  private dishErrMsg: string;
-  private promotion: Promotion;
-  private leader: Leader;
+  dish: Dish;
+  dishErrMsg: string;
+  promotion: Promotion;
+  leader: Leader;
 
   constructor(
     private dishService: DishService,
