@@ -19,10 +19,10 @@
   </md-card-content>
 </md-card>
 <div [hidden]="dish || dishErrMsg">
-  <md-spinner></md-spinner><h4>Loading . . . Please Wait</h4>
+  <md-spinner></md-spinner><h4>Loading Featured Dish . . . Please Wait</h4>
 </div>
 <div *ngIf="dishErrMsg">
-  <h2>Error</h2>
+  <h2>Dish Error</h2>
   <h4>{{dishErrMsg}}</h4>
 </div>
 
@@ -33,25 +33,39 @@
       <h3>{{promotion.name | uppercase}}</h3>
     </md-card-title>
   </md-card-header>
-  <img md-card-image src={{promotion.image}} alt={{promotion.name}}>
+  <img md-card-image src={{ImageURL+promotion.image}} alt={{promotion.name}}>
   <md-card-content>
     <p>{{promotion.description}}
     </p>
   </md-card-content>
 </md-card>
+<div [hidden]="promotion || promotionErrMsg">
+  <md-spinner></md-spinner><h4>Loading Promotion. . . Please Wait</h4>
+</div>
+<div *ngIf="promotionErrMsg">
+  <h2>Promotion Error</h2>
+  <h4>{{promotionErrMsg}}</h4>
+</div>
 
 <md-card *ngIf="leader" fxFlex [@expand]>
   <md-card-header>
     <div md-card-avatar></div>
     <md-card-title>
-      <h3>{{promotion.name | uppercase}}</h3>
+      <h3>{{leader.name | uppercase}}</h3>
     </md-card-title>
   </md-card-header>
-  <img md-card-image src={{leader.image}} alt={{leader.name}}>
+  <img md-card-image src={{ImageURL+leader.image}} alt={{leader.name}}>
   <md-card-content>
     <p>{{leader.description}}
     </p>
   </md-card-content>
 </md-card>
+<div [hidden]="leader || leaderErrMsg">
+  <md-spinner></md-spinner><h4>Loading Leader . . . Please Wait</h4>
+</div>
+<div *ngIf="leaderErrMsg">
+  <h2>Leader Error</h2>
+  <h4>{{leaderErrMsg}}</h4>
+</div>
 
 </div>
